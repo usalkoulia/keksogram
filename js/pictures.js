@@ -1,0 +1,130 @@
+// 1: сгенерировать данные; (done)
+//   1.1 создать функцию, которая генерирует 1 элемент. Эта функция должна возвращать обьект со следующей структурой: (done)
+//     {
+//       url: 'stroka',
+//       likes: число,
+//       comments: ['stroka1', 'stroka2'],
+//       description: 'stroka',
+//     }
+//     1.1.1 генерация значения свойства `url`: создать функцию, которая будет возвращать строку, в которой будет присутствовать случайное число от 1 до 25. Строка вида `photos/{{чиселко}}.jpg` (done)
+//
+//     1.1.2 генерация значения свойства `likes`: создать функцию, которая будет возвращать случайное число от 15 до 200. (done)
+//
+//     1.1.3 генерация значения свойства `comments`: создать функцию, которая будет возвращать массив строк. (done)
+//       1.1.3.1 написать массив из указанных строк (done)
+//       1.1.3.2 написать функцию, возвращающую случайны элемент из этого массива (done)
+//       1.1.3.3 написать функцию, которая будет возвращать массив из пяти элементов, каждый элемнет будет создаваться с помощью функции описанной в 1.1.3.2 (done)
+//
+//     1.1.4 генерация значения свойства `description`: создать функцию, которая будет возвращать случайный элемент массива (done)
+//       1.1.4.1 написать массив из указанных строк (done)
+//       1.1.4.2 написать функцию, возвращающую случайны элемент из этого массива (done)
+//
+//   1.2 создать функцию, которая будет возвращать массив изззз 25 элементов, каждый элемент будет создаваться с помощью функции из 1.1
+
+function random(min, max) {
+  var randomNumber = Math.floor(Math.random() * (max - min)) + min;
+
+  return randomNumber;
+}
+
+// 1.1.1
+function generateUrl() {
+  var randomNumber = random(1, 25);
+
+  return 'photos/' + randomNumber + '.jpg';
+};
+
+// 1.1.2
+function generateLikes() {
+  var randomNumber = random(15, 200);
+
+  return randomNumber;
+};
+
+// 1.1.4.1
+var DESCRIPTIONS = [
+  'Тестим новую камеру!',
+  'Затусили с друзьями на море',
+  'Как же круто тут кормят',
+  'Отдыхаем...',
+  'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
+  'Вот это тачка!',
+];
+
+function randomArrayElement(array) {
+  var randomIndex = random(0, array.length - 1);
+  var randomElement = array[randomIndex];
+
+  return randomElement;
+}
+
+// 1.1.4.2
+function generateDescription() {
+  var randomElement = randomArrayElement(DESCRIPTIONS);
+
+  return randomElement;
+}
+
+// 1.1.3.1
+var COMMENTS = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают.',
+  'Как можно было поймать такой неудачный момент?!',
+];
+
+// 1.1.3.2
+function generateComment() {
+  if (Math.random() > 0.5) {
+    var randomElement = randomArrayElement(COMMENTS);
+  } else {
+    var randomElement = randomArrayElement(COMMENTS) + " " + randomArrayElement(COMMENTS);
+  }
+
+  return randomElement;
+}
+
+// 1.1.3.3
+function generateComments() {
+  var comments = [];
+
+  for (var i = 0; i < random(0, 10); i++) {
+    var comment = generateComment();
+
+    comments[i] = comment;
+  }
+
+  return comments;
+};
+
+// 1.1
+function generateElement() {
+  var element = {
+    url: generateUrl(),
+    likes: generateLikes(),
+    comments: generateComments(),
+    description: generateDescription(),
+  };
+
+  return element;
+}
+
+// 1.2
+function generateElements() {
+  var elements = [];
+
+  for (var i = 0; i < 25; i++) {
+    var element = generateElement();
+
+    elements[i] = element;
+  }
+
+  return elements;
+};
+
+console.log(generateElements())
+
+// 2: использовать сгенерированные данные для создания дом-элемнетов и вставки их в дом-дерево;
