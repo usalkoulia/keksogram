@@ -91,7 +91,7 @@ function generateComment() {
 function generateComments() {
   var comments = [];
 
-  for (var i = 0; i < random(0, 10); i++) {
+  for (var i = 0; i < random(3, 10); i++) {
     var comment = generateComment();
 
     comments[i] = comment;
@@ -125,6 +125,88 @@ function generateElements() {
   return elements;
 };
 
-console.log(generateElements())
-
 // 2: использовать сгенерированные данные для создания дом-элемнетов и вставки их в дом-дерево;
+// переменная, в которой находится темплейт отдельной картинки
+var picture = document.querySelector('#picture')
+    .content
+    .querySelector('.picture');
+
+// переменная, в которой находится массив из 25 сгенерированных элементов
+var pictures = generateElements();
+
+// ДОМ-элемент, в который нужно вставлять картинки
+var picturesBlock = document.querySelector(".pictures");
+
+// цикл, в котором вставляются картинки (0..25)
+for (var i = 0; i < pictures.length; i++) {
+  // склонированный темплейт
+  var pictureElement = picture.cloneNode(true);
+  // и-тый элемент массива со сгенерированными элементами
+  var pictureObject = pictures[i];
+
+  // вставка данных
+  pictureElement.querySelector('.picture__comments').textContent = pictureObject.comments.length;
+  pictureElement.querySelector('.picture__likes').textContent = pictureObject.likes;
+  pictureElement.querySelector('.picture__img').src = pictureObject.url;
+
+  // вставка в разметку
+  picturesBlock.appendChild(pictureElement);
+}
+
+// функция для генерации аватарок для комментриев
+function generateBigAvatar() {
+  var randomNumber = random(1, 6);
+
+  return 'img/avatar-' + randomNumber + '.svg';
+}
+
+// функция, в которой находится код для работы с большим постом
+function showBigPicture() {
+
+  // показать боьшой пост
+  var bigPicture = document.querySelector('.big-picture');
+  bigPicture.classList.remove('hidden');
+
+  // достать из массива со сгенерированными картинками нулевой элемент
+  var firstElement = pictures[0];
+
+  // в разметку большого поста вставить актуальные данные из нулевого элемента
+  bigPicture.querySelector('.comments-count').textContent = firstElement.comments.length;
+  bigPicture.querySelector('.likes-count').textContent = firstElement.likes;
+  bigPicture.querySelector('.big-picture__img img').src = firstElement.url;
+  bigPicture.querySelector('.social__caption').textContent = firstElement.description;
+
+  // достали для удобства массив с комментариями в переменную
+  var bigPostComments = firstElement.comments;
+
+  // темплейт комментария
+  var comment = document.querySelector('#comment')
+    .content
+    .querySelector('.social__comment');
+
+  // ДОМ=элемент, в который нужно вставить комментарии
+  var commentsBlock = document.querySelector(".social__comments");
+
+  // цикл по вставке комментариев в дом-дерево
+  for (var i = 0; i < bigPostComments.length; i++) {
+    var commentElement = comment.cloneNode(true);
+    var commentString = bigPostComments[i];
+
+    commentElement.querySelector('.social__text').textContent = commentString;  commentElement.querySelector('.social__picture').src = generateBigAvatar();
+
+    commentsBlock.appendChild(commentElement);
+  }
+}
+
+// вызов функции, в которой происходит всякое с биг пикчером
+showBigPicture();
+
+function hideControls() {
+  var socialCommentCount = document.querySelector(".social__comment-count");
+  var socialLoadmore = document.querySelector(".social__comments-loader");
+
+  socialCommentCount.classList.add("visually-hidden");
+  socialLoadmore.classList.add("visually-hidden");
+}
+
+hideControls();
